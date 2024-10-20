@@ -1,9 +1,15 @@
 import { useState } from 'nuxt/app';
+import { computed } from 'vue';
 
 export const useName = (initialName = '') => {
-  const name = useState<string>('name', () => initialName);
+  const nameState = useState<{ name: string }>('name', () => {
+    return { name: initialName };
+  });
+  const name = computed(() => {
+    return nameState.value.name;
+  });
   const setName = (newName: string) => {
-    name.value = newName;
+    nameState.value.name = newName;
   };
   return [name, setName] as const;
 };
